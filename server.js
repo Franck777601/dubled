@@ -19,6 +19,10 @@ if (!fs.existsSync(PROSPECTS_FILE)) {
   fs.writeFileSync(PROSPECTS_FILE, JSON.stringify([], null, 2));
 }
 
+function normalizeTelephone(phone) {
+  return String(phone || '').replace(/\D/g, '');
+}
+
 // Generate unique ID using school and language
 function generateId(school, lang) {
   // Normalize school to an uppercase code (ISPA or ISBITAGES)
@@ -39,6 +43,23 @@ function saveProspect(data) {
       console.error('Error parsing prospects.json:', e);
       prospects = [];
     }
+  }
+
+  const normalizedPhone = normalizeTelephone(data.telephone);
+  const existing = prospects.find(p => normalizeTelephone(p.telephone) === normalizedPhone);
+
+  if (existing) {
+    existing.nom = data.nom || existing.nom;
+    existing.telephone = data.telephone;
+    existing.filiere = data.filiere || existing.filiere;
+    existing.conseillerNeeded = data.conseillerNeeded === 'true' || data.conseillerNeeded === true;
+    existing.school = data.school || existing.school;
+    existing.lang = data.lang || existing.lang;
+    existing.source = data.source || existing.source;
+    existing.dateInscription = new Date().toISOString();
+
+    fs.writeFileSync(PROSPECTS_FILE, JSON.stringify(prospects, null, 2));
+    return existing;
   }
 
   const prospect = {
