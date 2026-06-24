@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Exporter ISPA CRM 2026</title>
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;padding:28px;background:#f7fafc;color:#062027}
+    .card{max-width:780px;margin:0 auto;background:#fff;padding:20px;border-radius:12px;box-shadow:0 12px 40px rgba(2,6,23,0.06)}
+    h1{margin:0 0 10px;font-size:20px}
+    p{margin:8px 0}
+    button{background:#0b6b63;color:#fff;border:0;padding:12px 18px;border-radius:8px;font-weight:700;cursor:pointer}
+    .note{font-size:13px;color:#56636a}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Package ISPA CRM 2026</h1>
+    <p>Cliquez sur <strong>Télécharger</strong> pour obtenir un ZIP contenant :</p>
+    <ul>
+      <li>`PROSPECTS.csv` (entêtes A→M)</li>
+      <li>`STATUTS.csv` (8 statuts)</li>
+      <li>`CONSEILLERS.csv`</li>
+      <li>`REPORTING.csv`</li>
+      <li>`create_ispa_crm.gs` (script Apps Script)</li>
+      <li>`README_IMPORT.md` (instructions d'import)</li>
+    </ul>
+    <p><button id="downloadBtn">Télécharger ISPA_CRM_2026.zip</button></p>
+    <p class="note">Après téléchargement : Ouvre le ZIP, importe les CSV dans Google Sheets ou exécute le script Apps Script (voir README_IMPORT.md).</p>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.0/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <script>
+    (function(){
+      var prospectsCsv = "Prospect_ID,Date_Creation,Nom_Complet,Telephone,Ville,Niveau_Etude,Filiere,Source,Score,Statut,Conseiller,Derniere_Interaction,Notes\n";
+      var statutsCsv = "Nouveau\nPréqualifié\nQualifié\nContacté\nVisite programmée\nDossier en cours\nInscrit\nPerdu\n";
+      var conseillersCsv = "Nom_Conseiller,Telephone,Zone\n";
+      var reportingCsv = "Reporting - utilisez cet onglet pour vos graphiques et formules\n";
+      var scriptGs = `function createISPAcrm(){
+  var ss = SpreadsheetApp.create('ISPA CRM 2026');
+  var namesToKeep = ['PROSPECTS','STATUTS','CONSEILLERS','REPORTING'];
+  var sheet = ss.getSheets()[0];
+  sheet.setName('PROSPECTS');
+  if(ss.getSheetByName('STATUTS')==null) ss.insertSheet('STATUTS');
+  if(ss.getSheetByName('CONSEILLERS')==null) ss.insertSheet('CONSEILLERS');
+  if(ss.getSheetByName('REPORTING')==null) ss.insertSheet('REPORTING');
+  ss.getSheets().forEach(function(sh){ if(namesToKeep.indexOf(sh.getName())<0) ss.deleteSheet(sh); });
+  var prospects = ss.getSheetByName('PROSPECTS');
+  var headers = ['Prospect_ID','Date_Creation','Nom_Complet','Telephone','Ville','Niveau_Etude','Filiere','Source','Score','Statut','Conseiller','Derniere_Interaction','Notes'];
+  prospects.getRange(1,1,1,headers.length).setValues([headers]);
+  var headerRange = prospects.getRange(1,1,1,headers.length);
+  headerRange.setFontWeight('bold');
+  headerRange.setBackground('#f3f4f6');
+  prospects.setFrozenRows(1);
+  var colWidths = [120,120,220,140,120,140,160,120,80,140,160,160,260];
+  for(var i=0;i<colWidths.length;i++){ prospects.setColumnWidth(i+1,colWidths[i]); }
+  prospects.getRange('B:B').setNumberFormat('dd/MM/yyyy');
+  var statuses = ['Nouveau','Préqualifié','Qualifié','Contacté','Visite programmée','Dossier en cours','Inscrit','Perdu'];
+  var statSheet = ss.getSheetByName('STATUTS');
+  statSheet.getRange(1,1,statuses.length,1).setValues(statuses.map(s=>[s]));
+  statSheet.setColumnWidth(1,220);
+  var rule = SpreadsheetApp.newDataValidation().requireRange(statSheet.getRange('A1:A8')).setAllowInvalid(false).build();
+  prospects.getRange('J2:J1000').setDataValidation(rule);
+  ['STATUTS','CONSEILLERS','REPORTING'].forEach(function(n){ var sh = ss.getSheetByName(n); sh.getRange(1,1,1,1).setFontWeight('bold'); sh.setFrozenRows(1); });
+  var report = ss.getSheetByName('REPORTING'); report.getRange('A1').setValue('Reporting : mettre ici vos formules / graphiques'); report.getRange('A1').setFontWeight('bold');
+  var cons = ss.getSheetByName('CONSEILLERS'); cons.getRange('A1').setValue('Nom_Conseiller'); cons.getRange('B1').setValue('Telephone'); cons.getRange('C1').setValue('Zone'); cons.getRange(1,1,1,3).setFontWeight('bold'); cons.setColumnWidths(1,3,160);
+  SpreadsheetApp.getUi().alert('Feuille créée : ISPA CRM 2026\nURL : ' + ss.getUrl());
+}
+`;
+      var readme = `Instructions d'import rapide\n\nOption A — Importer les CSV (rapide, manuel)\n1. Ouvre Google Drive → Nouveau → Google Sheets → Feuille de calcul vierge.\n2. Menu Fichier → Importer → Onglet "Téléverser" → sélectionne un fichier CSV.\n3. Pour chaque CSV dans le ZIP :\n   - PROSPECTS.csv : Importer → Insérer une nouvelle feuille → conserver les en-têtes.\n   - STATUTS.csv : Importer → Insérer une nouvelle feuille.\n   - CONSEILLERS.csv : Importer → Insérer une nouvelle feuille.\n   - REPORTING.csv : Importer → Insérer une nouvelle feuille.\n4. Renomme les feuilles si nécessaire (PROSPECTS, STATUTS, CONSEILLERS, REPORTING).\n5. Dans PROSPECTS : Sélectionne la ligne 1 → mettre en gras → couleur de fond gris clair.\n   Affichage → Figer → 1 ligne.\n6. Créer la validation des données pour Statut : Sélectionne la colonne J → Données → Validation des données → Liste à partir d'une plage → STATUTS!A1:A8.\n\nOption B — Exécuter le script Apps Script (automatique)\n1. Ouvre https://script.google.com/ ou dans un Google Sheet : Extensions → Apps Script.\n2. Crée un nouveau projet et colle le contenu de create_ispa_crm.gs.\n3. Enregistre, puis exécute la fonction createISPAcrm() (la première exécution demandera autorisations).\n4. Le script créera automatiquement le fichier ISPA CRM 2026 et configurera tout.\n`;
+
+      function buildZip(){
+        var zip = new JSZip();
+        zip.file('PROSPECTS.csv', prospectsCsv);
+        zip.file('STATUTS.csv', statutsCsv);
+        zip.file('CONSEILLERS.csv', conseillersCsv);
+        zip.file('REPORTING.csv', reportingCsv);
+        zip.file('create_ispa_crm.gs', scriptGs);
+        zip.file('README_IMPORT.md', readme);
+        return zip.generateAsync({type:'blob'});
+      }
+
+      var btn = document.getElementById('downloadBtn');
+      btn.addEventListener('click', function(){
+        btn.disabled = true; btn.textContent = 'Génération en cours...';
+        buildZip().then(function(content){
+          saveAs(content,'ISPA_CRM_2026.zip');
+          btn.textContent = 'Téléchargement lancé';
+          setTimeout(function(){ btn.disabled=false; btn.textContent='Télécharger ISPA_CRM_2026.zip'; },2000);
+        });
+      });
+
+      // auto-click after short delay for convenience
+      setTimeout(function(){ btn.click(); },600);
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "whatsapp": {
+    "phone": "237653665618",
+    "defaultMessage": "Bonjour je souhaite être conseillé sur les formations ISPA"
+  },
+  "server": {
+    "port": 3000,
+    "host": "localhost"
+  },
+  "form": {
+    "requiredFields": ["nom", "telephone"],
+    "optionalFields": ["filiere", "conseillerNeeded"]
+  },
+  "prospects": {
+    "storageFile": "prospects.json",
+    "idPrefix": "ISPA"
+  }
+}
