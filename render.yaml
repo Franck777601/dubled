@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: ispa-forms
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: WHATSAPP_PHONE
+        value: 237653665618
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
