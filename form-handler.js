@@ -149,11 +149,21 @@
       if (response.ok && data.success) {
         console.log(trans.consoleConfirm(data.id, nom));
 
-        alert(`${trans.successTitle(nom)}\nID: ${data.id}\n${trans.successRedirect}`);
-        closeFormModal();
+      alert(`${trans.successTitle(nom)}\nID: ${data.id}\n${trans.successRedirect}`);
+closeFormModal();
 
-        // Redirect to WhatsApp using direct navigation to avoid popup blockers
-        window.location.href = data.whatsappLink;
+// Déclencher l'événement Lead Facebook Pixel
+if (typeof fbq === 'function') {
+  fbq('track', 'Lead', {
+    content_name: school,
+    content_category: filiere || 'non précisée',
+    content_category2: lang
+  });
+}
+
+// Redirect to WhatsApp using direct navigation to avoid popup blockers
+window.location.href = data.whatsappLink;
+
       } else {
         alert('Erreur: ' + (data.error || 'Une erreur est survenue'));
         if (submitBtn) {
