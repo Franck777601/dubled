@@ -12,7 +12,7 @@ app.use(express.static('.'));
 const PROSPECTS_FILE = path.join(__dirname, 'prospects.json');
 const PORT = process.env.PORT || 3000;
 // Final WhatsApp destination number for prospects (country code included)
-const WHATSAPP_PHONE = '237653665618';
+const WHATSAPP_PHONE = process.env.WHATSAPP_PHONE || '237677688000';
 
 // Ensure prospects.json exists
 if (!fs.existsSync(PROSPECTS_FILE)) {

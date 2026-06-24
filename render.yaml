@@ -7,7 +7,7 @@ services:
     startCommand: npm start
     envVars:
       - key: WHATSAPP_PHONE
-        value: 237653665618
+        value: 237677688000
       - key: NODE_ENV
         value: production
       - key: PORT
