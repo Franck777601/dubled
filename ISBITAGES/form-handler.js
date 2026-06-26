@@ -1,7 +1,7 @@
 // Form Handler - Advanced version with multi-language & school support
 (function() {
 const API_URL = 'https://dubled.onrender.com';
-  const WHATSAPP_PHONE = '237677688000';
+  const WHATSAPP_PHONE = '15559707710';
 
   // Translations
   const translations = {
