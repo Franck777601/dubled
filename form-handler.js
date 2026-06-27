@@ -145,6 +145,7 @@
     const telephone = document.getElementById('telephone').value.trim();
     const filiere = document.getElementById('filiere').value;
     const conseillerNeeded = document.getElementById('conseiller-needed').checked;
+    const estParent = document.getElementById('est-parent')?.value || 'non';
 
     const trans = getTrans(lang);
 
@@ -180,14 +181,15 @@ if (typeof fbq === 'function') {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          nom,
-          telephone,
-          filiere: filiere || '',
-          conseillerNeeded,
-          school: school,
-          lang: lang,
-          source: 'form'
-        }),
+  nom,
+  telephone,
+  filiere: filiere || '',
+  conseillerNeeded,
+  estParent,
+  school: school,
+  lang: lang,
+  source: 'form'
+}),
       });
 
       const data = await response.json();
