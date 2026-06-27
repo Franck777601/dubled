@@ -157,7 +157,15 @@
       alert(lang === 'fr' ? 'Veuillez saisir un numéro WhatsApp valide (avec indicatif international si possible).' : 'Please enter a valid WhatsApp number (include country code if possible).');
       return;
     }
+// Déclencher Lead immédiatement à la soumission
+if (typeof fbq === 'function') {
+  fbq('track', 'Lead', {
+    content_name: school,
+    content_category: filiere || 'non précisée'
+  });
+}
 
+    
     const submitBtn = e.target.querySelector('.btn-submit');
     if (submitBtn) {
       submitBtn.disabled = true;
