@@ -162,13 +162,10 @@ src="https://www.facebook.com/tr?id=27137526839222048&ev=PageView&noscript=1"
         <p>Fill out this form and we'll redirect you to WhatsApp with all your details.</p>
       </div>
 
-      <div id="form-errors" class="form-errors"></div>
-
-      <form id="prospectForm">
-        <div class="form-group">
-          <label for="nom">Your full name *</label>
-          <input type="text" id="nom" name="nom" required placeholder="Ex: John Doe" autocomplete="name">
-        </div>
+      <div class="form-group">
+  <label for="nom">Student's name *</label>
+  <input type="text" id="nom" name="nom" required placeholder="Ex: John Doe" autocomplete="name">
+</div>
 
         <div class="form-group">
           <label for="telephone">WhatsApp number *</label>
@@ -194,6 +191,16 @@ src="https://www.facebook.com/tr?id=27137526839222048&ev=PageView&noscript=1"
           </select>
         </div>
 
+<div class="form-group">
+  <label for="est-parent">Are you a parent of the student? *</label>
+  <select id="est-parent" name="est-parent" required>
+    <option value="">— Select —</option>
+    <option value="oui">Yes, I am a parent</option>
+    <option value="non">No, I am the student</option>
+  </select>
+</div>
+
+      
         <div class="form-checkbox-group">
           <input type="checkbox" id="conseiller-needed" name="conseiller-needed">
           <label for="conseiller-needed">I'd like to learn more about available trainings</label>
