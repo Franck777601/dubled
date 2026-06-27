@@ -150,67 +150,70 @@ src="https://www.facebook.com/tr?id=27137526839222048&ev=PageView&noscript=1"
     <a class="whatsapp-bar-link" href="#" data-form-link="true" data-school="isbitages" data-lang="fr">Parler à un conseiller</a>
   </div>
 
-  <!-- FORMULAIRE MODAL ISBITAGES FR -->
-  <div id="formModal" data-school="isbitages" data-lang="fr">
-    <div class="form-modal-content">
-      <button class="form-modal-close" aria-label="Fermer">✕</button>
+ <!-- FORMULAIRE MODAL ISBITAGES FR -->
+<div id="formModal" data-school="isbitages" data-lang="fr">
+  <div class="form-modal-content">
+    <button class="form-modal-close" aria-label="Fermer">✕</button>
 
-      <div class="form-modal-header">
-        <h2>Choisissez votre formation pratique</h2>
-        <p>Remplissez ce formulaire et nous vous redirigerons vers WhatsApp avec tous vos détails.</p>
+    <div class="form-modal-header">
+      <h2>Choisissez votre formation pratique</h2>
+      <p>Remplissez ce formulaire et nous vous redirigerons vers WhatsApp avec tous vos détails.</p>
+    </div>
+
+    <div id="form-errors" class="form-errors"></div>
+
+    <form id="prospectForm">
+      <div class="form-group">
+        <label for="nom">Nom de l'étudiant *</label>
+        <input type="text" id="nom" name="nom" required placeholder="Ex: Franck EBOLO" autocomplete="name">
       </div>
 
-     <div class="form-group">
-  <label for="nom">Nom de l'étudiant *</label>
-  <input type="text" id="nom" name="nom" required placeholder="Ex: Franck EBOLO" autocomplete="name">
-</div>
-
-        <div class="form-group">
-          <label for="telephone">Numéro WhatsApp *</label>
-          <input type="tel" id="telephone" name="telephone" required placeholder="Ex: 690123456" autocomplete="tel">
-        </div>
-
-        <div id="filiere-container" class="form-group">
-          <label for="filiere">Quelle formation vous intéresse ?</label>
-          <select id="filiere" name="filiere">
-            <option value="">— Choisir une formation —</option>
-            <option value="Mécanique Automobile">Mécanique Automobile</option>
-            <option value="Électricité Bâtiment">Électricité Bâtiment</option>
-            <option value="Plomberie & Sanitaire">Plomberie & Sanitaire</option>
-            <option value="Maçonnerie & Gros Œuvre">Maçonnerie & Gros Œuvre</option>
-            <option value="Menuiserie & Charpente">Menuiserie & Charpente</option>
-            <option value="Soudure & Métallurgie">Soudure & Métallurgie</option>
-            <option value="Coiffure & Beauté">Coiffure & Beauté</option>
-            <option value="Cuisine & Restauration">Cuisine & Restauration</option>
-            <option value="Couture & Confection">Couture & Confection</option>
-            <option value="Électronique Appliquée">Électronique Appliquée</option>
-            <option value="Installation Climatique">Installation Climatique</option>
-            <option value="Autre">Autre (à discuter avec le conseiller)</option>
-          </select>
-        </div>
-
-<div class="form-group">
-  <label for="est-parent">Êtes-vous parent de l'étudiant ? *</label>
-  <select id="est-parent" name="est-parent" required>
-    <option value="">— Choisir —</option>
-    <option value="oui">Oui, je suis parent</option>
-    <option value="non">Non, je suis l'étudiant</option>
-  </select>
-</div>
-      
-        <div class="form-checkbox-group">
-          <input type="checkbox" id="conseiller-needed" name="conseiller-needed">
-          <label for="conseiller-needed">Je souhaite en savoir plus sur les formations</label>
-        </div>
-
-        <button type="submit" id="submit-btn" class="btn-submit">Poursuivre sur WhatsApp →</button>
-      </form>
-
-      <div class="form-footer">
-        Vous serez redirigé vers un chat WhatsApp avec les informations que vous avez entrées.
+      <div class="form-group">
+        <label for="telephone">Numéro WhatsApp *</label>
+        <input type="tel" id="telephone" name="telephone" required placeholder="Ex: 690123456" autocomplete="tel">
       </div>
+
+      <div id="filiere-container" class="form-group">
+        <label for="filiere">Quelle formation vous intéresse ?</label>
+        <select id="filiere" name="filiere">
+          <option value="">— Choisir une formation —</option>
+          <option value="Mécanique Automobile">Mécanique Automobile</option>
+          <option value="Électricité Bâtiment">Électricité Bâtiment</option>
+          <option value="Plomberie & Sanitaire">Plomberie & Sanitaire</option>
+          <option value="Maçonnerie & Gros Œuvre">Maçonnerie & Gros Œuvre</option>
+          <option value="Menuiserie & Charpente">Menuiserie & Charpente</option>
+          <option value="Soudure & Métallurgie">Soudure & Métallurgie</option>
+          <option value="Coiffure & Beauté">Coiffure & Beauté</option>
+          <option value="Cuisine & Restauration">Cuisine & Restauration</option>
+          <option value="Couture & Confection">Couture & Confection</option>
+          <option value="Électronique Appliquée">Électronique Appliquée</option>
+          <option value="Installation Climatique">Installation Climatique</option>
+          <option value="Autre">Autre (à discuter avec le conseiller)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="est-parent">Êtes-vous parent de l'étudiant ? *</label>
+        <select id="est-parent" name="est-parent" required>
+          <option value="">— Choisir —</option>
+          <option value="oui">Oui, je suis parent</option>
+          <option value="non">Non, je suis l'étudiant</option>
+        </select>
+      </div>
+
+      <div class="form-checkbox-group">
+        <input type="checkbox" id="conseiller-needed" name="conseiller-needed">
+        <label for="conseiller-needed">Je souhaite en savoir plus sur les formations</label>
+      </div>
+
+      <button type="submit" id="submit-btn" class="btn-submit">Poursuivre sur WhatsApp →</button>
+    </form>
+
+    <div class="form-footer">
+      Vous serez redirigé vers un chat WhatsApp avec les informations que vous avez entrées.
     </div>
   </div>
+</div>
 
   <script>
     window.ISPA_PHONE = '15559707710';
