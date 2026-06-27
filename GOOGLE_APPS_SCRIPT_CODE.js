@@ -1,3 +1,6 @@
+// ISPA CRM - Google Apps Script
+// Copiez tout ce code dans Google Apps Script
+
 // Global variable to store the spreadsheet ID (set after creation)
 var SPREADSHEET_ID = '';
 

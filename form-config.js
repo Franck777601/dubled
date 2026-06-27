@@ -1,7 +1,7 @@
 // Configuration multilingue des formulaires
 const FORM_CONFIG = {
   whatsapp: {
-    phone: '237653665618', // Numéro WhatsApp unique
+    phone: '15559707710', // Numéro WhatsApp unique
     baseUrl: 'https://wa.me'
   },
 

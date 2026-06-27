@@ -114,7 +114,7 @@ Après chaque soumission :
 
 Dans `form-handler.js` (ligne 11) :
 ```javascript
-const WHATSAPP_PHONE = '237653665618'; // Changer ici
+const WHATSAPP_PHONE = '15559707710'; // Changer ici
 ```
 
 ### Changer le port du serveur

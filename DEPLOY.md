@@ -20,7 +20,7 @@ git push -u origin main
 - Build Command: `npm install`
 - Start Command: `npm start` (or `node server.js`)
 - Add Environment Variables in Render:
-  - `WHATSAPP_PHONE` = `237653665618`
+  - `WHATSAPP_PHONE` = `15559707710`
   - `NODE_ENV` = `production`
 - Create the service; Render will build and give you an HTTPS URL.
 

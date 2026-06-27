@@ -81,7 +81,7 @@ Fichier principal: `server.js` — le numéro WhatsApp qui recevra les messages 
 Par défaut (version finale livrée) le numéro est:
 
 ```
-237653665618
+15559707710
 ```
 
 Pour modifier le numéro, vous pouvez soit éditer la constante `WHATSAPP_PHONE` dans `server.js`, soit définir la variable d'environnement `WHATSAPP_PHONE` avant de démarrer le serveur.

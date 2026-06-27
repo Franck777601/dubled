@@ -12,3 +12,5 @@ services:
         value: production
       - key: PORT
         value: 3000
+      - key: GOOGLE_APPS_SCRIPT_URL
+        value: "https://script.google.com/macros/s/AKfycby3Yamn9lnIVOi10ETnbivhP-JOEQmMzflAnnJJOI_CyFNp5RN8xxVqn9kQn3y6GH4S/exec"

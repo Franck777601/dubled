@@ -1,7 +1,45 @@
 // Form Handler - Advanced version with multi-language & school support
 (function() {
 const API_URL = 'https://dubled.onrender.com';
-  const WHATSAPP_PHONE = '15559707710';
+  const DEFAULT_WHATSAPP_PHONE = '15559707710';
+
+  function getConfiguredWhatsAppPhone() {
+    const configured = window.ISPA_PHONE;
+    const sanitized = configured ? String(configured).replace(/\D/g, '') : '';
+    return sanitized || DEFAULT_WHATSAPP_PHONE;
+  }
+
+  function buildWhatsAppLink(message, phone = getConfiguredWhatsAppPhone()) {
+    const sanitizedPhone = String(phone || getConfiguredWhatsAppPhone()).replace(/\D/g, '');
+    return `https://wa.me/${encodeURIComponent(sanitizedPhone)}?text=${encodeURIComponent(message)}`;
+  }
+
+  function buildRedirectMessage({ id, nom, telephone, filiere, conseillerNeeded, school, lang }) {
+    const schoolName = school === 'isbitages' ? 'ISBITAGES' : 'ISPA';
+    const isEnglish = lang === 'en';
+
+    let message = isEnglish ? 'Hello! 👋\n\n' : 'Bonjour! 👋\n\n';
+    message += isEnglish ? `*Prospect ID:* ${id}\n` : `*ID Prospect:* ${id}\n`;
+    message += isEnglish ? `*Name:* ${nom}\n` : `*Nom:* ${nom}\n`;
+    message += isEnglish ? `*Phone:* ${telephone}\n` : `*Téléphone:* ${telephone}\n`;
+    message += isEnglish ? `*School:* ${schoolName}\n` : `*École:* ${schoolName}\n`;
+
+    if (filiere) {
+      message += isEnglish ? `*Program:* ${filiere}\n` : `*Filière:* ${filiere}\n`;
+    }
+
+    if (conseillerNeeded) {
+      message += isEnglish
+        ? '*Request:* Needs guidance choosing a program\n'
+        : '*Demande:* Besoin d\'un conseiller d\'orientation\n';
+    }
+
+    message += isEnglish
+      ? `\nI would like to be advised about ${schoolName} training programs.`
+      : `\nJe souhaite être conseillé sur les formations ${schoolName}.`;
+
+    return message;
+  }
 
   // Translations
   const translations = {
@@ -150,19 +188,28 @@ const API_URL = 'https://dubled.onrender.com';
         console.log(trans.consoleConfirm(data.id, nom));
 
         alert(`${trans.successTitle(nom)}\nID: ${data.id}\n${trans.successRedirect}`);
-closeFormModal();
+        closeFormModal();
 
-// Déclencher l'événement Lead Facebook Pixel
-if (typeof fbq === 'function') {
-  fbq('track', 'Lead', {
-    content_name: school,
-    content_category: filiere || 'non précisée',
-    content_category2: lang
-  });
-}
+        // Déclencher l'événement Lead Facebook Pixel
+        if (typeof fbq === 'function') {
+          fbq('track', 'Lead', {
+            content_name: school,
+            content_category: filiere || 'non précisée',
+            content_category2: lang
+          });
+        }
 
-// Redirect to WhatsApp using direct navigation to avoid popup blockers
-window.location.href = data.whatsappLink;
+        const redirectMessage = buildRedirectMessage({
+          id: data.id,
+          nom,
+          telephone,
+          filiere: filiere || '',
+          conseillerNeeded,
+          school,
+          lang
+        });
+
+        window.location.href = buildWhatsAppLink(redirectMessage);
       } else {
         alert('Erreur: ' + (data.error || 'Une erreur est survenue'));
         if (submitBtn) {

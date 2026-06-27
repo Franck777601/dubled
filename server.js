@@ -1,8 +1,10 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
+const https = require('https');
 
 const app = express();
 app.use(cors());
@@ -10,13 +12,70 @@ app.use(bodyParser.json());
 app.use(express.static('.'));
 
 const PROSPECTS_FILE = path.join(__dirname, 'prospects.json');
+const CONFIG_FILE = path.join(__dirname, 'config.json');
 const PORT = process.env.PORT || 3000;
+
+function getConfiguredWhatsAppPhone() {
+  const envPhone = process.env.WHATSAPP_PHONE;
+  if (envPhone && String(envPhone).trim()) {
+    return String(envPhone).trim();
+  }
+
+  try {
+    const config = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf8'));
+    if (config && config.whatsapp && config.whatsapp.phone) {
+      return String(config.whatsapp.phone).trim();
+    }
+  } catch (error) {
+    console.warn('⚠️  Impossible de lire config.json pour le numéro WhatsApp:', error.message);
+  }
+
+  return '';
+}
+
 // Final WhatsApp destination number for prospects (country code included)
-const WHATSAPP_PHONE = process.env.WHATSAPP_PHONE || '237677688000';
+const WHATSAPP_PHONE = getConfiguredWhatsAppPhone() || '15559707710';
+// Google Apps Script Web App URL (for Google Sheets integration)
+const GOOGLE_APPS_SCRIPT_URL = process.env.GOOGLE_APPS_SCRIPT_URL || '';
 
 // Ensure prospects.json exists
 if (!fs.existsSync(PROSPECTS_FILE)) {
   fs.writeFileSync(PROSPECTS_FILE, JSON.stringify([], null, 2));
+}
+
+// Function to send prospect data to Google Sheet via Apps Script
+function sendToGoogleSheet(prospectData) {
+  if (!GOOGLE_APPS_SCRIPT_URL) {
+    console.log('ℹ️  Google Apps Script URL not configured. Skipping Google Sheet sync.');
+    return;
+  }
+
+  const payload = JSON.stringify(prospectData);
+  
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Length': Buffer.byteLength(payload)
+    }
+  };
+
+  https.request(GOOGLE_APPS_SCRIPT_URL, options, (res) => {
+    let data = '';
+    res.on('data', chunk => data += chunk);
+    res.on('end', () => {
+      try {
+        const result = JSON.parse(data);
+        if (result.success) {
+          console.log(`✅ Google Sheet updated: ${prospectData.id}`);
+        }
+      } catch (e) {
+        console.warn('Google Sheet sync response:' , res.statusCode);
+      }
+    });
+  }).on('error', (err) => {
+    console.warn('⚠️  Could not sync to Google Sheet:', err.message);
+  }).end(payload);
 }
 
 function normalizeTelephone(phone) {
@@ -78,6 +137,9 @@ function saveProspect(data) {
   fs.writeFileSync(PROSPECTS_FILE, JSON.stringify(prospects, null, 2));
 
   console.log(`📝 Nouveau prospect: ${prospect.id} - ${prospect.nom} (${prospect.school}/${prospect.lang})`);
+
+  // Send to Google Sheet (asynchronously)
+  sendToGoogleSheet(prospect);
 
   return prospect;
 }

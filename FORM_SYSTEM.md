@@ -264,7 +264,7 @@ Ouvrez `prospects.json` et cherchez `"school": "ispa"` ou `"school": "isbitages"
 
 Dans `form-handler.js` (ligne ~5):
 ```javascript
-const WHATSAPP_PHONE = '237653665618'; // ← Changer ici
+const WHATSAPP_PHONE = '15559707710'; // ← Changer ici
 ```
 
 Aussi dans `server.js` si vous envoyez le message directement.

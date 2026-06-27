@@ -9,7 +9,7 @@ Instructions rapides :
 
 ```html
 <script>
-  window.ISPA_PHONE = '237690123456'; // exemple sans espaces
+  window.ISPA_PHONE = '15559707710'; // exemple sans espaces
 </script>
 <script src="script.js"></script>
 ```

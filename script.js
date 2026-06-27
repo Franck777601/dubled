@@ -1,8 +1,8 @@
 // Petit helper pour appliquer facilement le numéro WhatsApp sans modifier plusieurs liens.
 (function(){
-  // Centralise le numéro WhatsApp. Définir window.ISPA_PHONE = '237690123456' avant ce script pour remplacer le placeholder.
-  var phone = (window.ISPA_PHONE && String(window.ISPA_PHONE).replace(/\D/g,'')) || '237653665618';
-  var text = 'Bonjour je souhaite être conseillé sur les formations ISPA';
+  // Centralise le numéro WhatsApp. Définir window.ISPA_PHONE = '15559707710' avant ce script pour remplacer le placeholder.
+  var phone = (window.ISPA_PHONE && String(window.ISPA_PHONE).replace(/\D/g,'')) || '15559707710';
+  var text = (window.ISPA_DEFAULT_MESSAGE && String(window.ISPA_DEFAULT_MESSAGE)) || 'Bonjour je souhaite être conseillé sur les formations ISPA';
   var encoded = encodeURIComponent(text);
   document.querySelectorAll('a[href*="wa.me"]').forEach(function(a){
     a.href = 'https://wa.me/' + phone + '?text=' + encoded;
