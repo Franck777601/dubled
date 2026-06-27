@@ -127,6 +127,7 @@ function saveProspect(data) {
     telephone: data.telephone,
     filiere: data.filiere || 'Non spécifiée',
     conseillerNeeded: data.conseillerNeeded === 'true' || data.conseillerNeeded === true,
+    estParent: data.estParent || 'non',
     school: data.school || 'ispa',
     lang: data.lang || 'fr',
     source: data.source || 'form',
@@ -154,7 +155,7 @@ function isValidPhone(phone) {
 // API endpoint to register prospect
 app.post('/api/register', (req, res) => {
   try {
-    const { nom, telephone, filiere, conseillerNeeded, school, lang } = req.body;
+   const { nom, telephone, filiere, conseillerNeeded, school, lang, estParent } = req.body;
 
     if (!nom || !telephone) {
       return res.status(400).json({ error: 'Nom et téléphone sont requis' });
@@ -165,14 +166,15 @@ app.post('/api/register', (req, res) => {
     }
 
     const prospect = saveProspect({
-      nom,
-      telephone,
-      filiere,
-      conseillerNeeded,
-      school: school || 'ispa',
-      lang: lang || 'fr',
-      source: 'form'
-    });
+  nom,
+  telephone,
+  filiere,
+  conseillerNeeded,
+  school: school || 'ispa',
+  lang: lang || 'fr',
+  estParent: estParent || 'non',
+  source: 'form'
+});
 
     const whatsappMessage = buildWhatsappMessage(prospect);
     const whatsappLink = `https://wa.me/${encodeURIComponent(WHATSAPP_PHONE)}?text=${encodeURIComponent(whatsappMessage)}`;
